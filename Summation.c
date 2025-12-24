@@ -46,34 +46,3 @@ int main() {
 
     return 0;
 }
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
-const int N = 200;
-const double Pi = M_PI;
-double c0 = 0;
-double c1 = 1;
-double Bn = (((2*N)+1)*Pi)/2;
-double D = 2.0e-5;
-const int t = 5;
-double dx = 0.001
-
-int main (){
-    double count = cos((Bn*dx)*N)*exp(-((Bn*Bn*D*t)/(L*L))), sum = 0;
-
-    for (i=0; i<N, i++){
-        
-    while(count <= N){
-        sum = sum+count;
-        count++;
-    }
-    printf("\n Sum = %d\n", sum);
-    }
-
-    return 0;
-    
-}
- */   
