@@ -1,3 +1,1 @@
-float Residual();
-void compute_T();
-
+float compute_T(float T, float e_target);

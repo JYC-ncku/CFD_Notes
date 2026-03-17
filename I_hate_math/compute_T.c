@@ -2,23 +2,39 @@
 #include <stdio.h>
 #include <math.h>
 
-float Residual(float T){
-	float a1 = 3.298677;
-	float a2 = 1.4082404e-3;
-	float a3 = -3.963222e-6;
-	float a4 = 5.641515e-9;
-	float a5 = -2.444854e-12;
-	float a6 = 1.0208999e3;
+float compute_T(float T, float e_target){
+	float T_new, Cv, H, e, R; // R is Residual function.
+	float a1, a2, a3, a4, a5, a6;
 	float R_gas = 296.8; // R of N2 is 296.8 J/(kg*K)
+	float Torlerance = 0.001;
+	float error = 100.0;
 
-	float Cv = R_gas * (a1 + a2*T + a3*pow(T,2) + a4*pow(T,3) + a5*pow(T,4) - 1.0);
-	float u = R_gas * ((a1 - 1.0)*T + (a2/2)*T*T + (a3/3)*pow(T,3) + (a4/4)*pow(T,4) + (a5/5)*pow(T,5) + a6);
-	float u_target = 625000; // u_target = (E/rho) - 0.5(u*u + v*v + w*w)
-	float R = u - u_target;
-return R/Cv;
-}
+	while(error > Torlerance){
+		//Decide whether to use the high-temperature or low-temperature coefficient.
+		if(T<=1000){
+			a1 = 3.29877;
+			a2 = 0.1408204e-2;
+			a3 = -0.03963222e-4;
+			a4 = 0.05641514e-7;
+			a5 = -0.02444854e-10;
+			a6 = -0.10208999e4;
+		} else{
+			a1 = 2.926640;
+			a2 = 0.14879768e-2;
+			a3 = -0.05684760e-5;
+			a4 = 0.10097038e-9;
+			a5 = -0.06753351e-13;
+			a6 = -0.09227977e4;
+		}
+		//Compute T
+		Cv = R_gas * (a1 + a2*T + (a3 * pow(T,2)) + (a4 * pow(T,3)) + (a5 * pow(T,4))) - R_gas;
+		e = Cv * T;
+		R = e - e_target;
+		T_new = T - (R/Cv);
 
-void compute_T(float T_new, float T, float RR){
-	T = T_old;
-	T_new = T_old - RR;
+		//Compute error;
+		error = fabs(T_new - T);
+		T = T_new;
+	}
+return T;
 }
