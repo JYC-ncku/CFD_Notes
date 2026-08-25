@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 讀取我們手上的重啟 CSV 檔案
-csv_filename = "restart_00199.csv"
+csv_filename = "solution_flow_00199.csv"
 
 print(f"正在讀取重啟檔案: {csv_filename}...")
 # SU2 的 CSV 通常第一行是標頭，用逗號隔開
